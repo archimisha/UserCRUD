@@ -1,17 +1,28 @@
 package org.example.crud.dao;
 
+import org.example.crud.models.Role;
 import org.example.crud.models.User;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@SuppressWarnings("ALL")
 @Component
 @Transactional
+@Repository
 public class UserDAOImpl {
+
+    private final Map<String, User> userMap = new HashMap<>();
+
+
 
     @PersistenceContext
     private EntityManager em;
@@ -42,5 +53,18 @@ public class UserDAOImpl {
     public void delete(int id) {
         User u = show(id);
         em.remove(u);
+    }
+
+    public User getUserByName(String name) {
+        userMap.put("user",
+                new User("user", "ab", 1, "12345", Collections.singleton(new Role(1L, "ROLE_USER"))));
+        userMap.put("admin",
+                new User("admin", "ad", 2, "admin", Collections.singleton(new Role(2L, "ROLE_ADMIN"))));
+
+        if (!userMap.containsKey(name)) {
+            return null;
+        }
+
+        return userMap.get(name);
     }
 }

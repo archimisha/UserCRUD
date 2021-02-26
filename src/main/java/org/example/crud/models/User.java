@@ -1,10 +1,15 @@
 package org.example.crud.models;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,12 +24,19 @@ public class User {
     @Column(name = "AGE")
     private int age;
 
+    private String password;
+
+    @Transient
+    private Set<Role> roles;
+
     public User() {}
 
-    public User(String name, String surname, int age) {
+    public User(String name, String surname, int age, String password, Set<Role> roles) {
         this.name = name;
         this.surname = surname;
         this.age = age;
+        this.password = password;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -57,5 +69,52 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
