@@ -9,14 +9,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserDAOImpl userDAO;
 
-    public UserDetailsServiceImpl(UserDAOImpl userDAO) {
-        this.userDAO = userDAO;
+    private final UserService userService;
+
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userDAO.getUserByName(s);
+        return userService.findUserByName(s);
     }
 }

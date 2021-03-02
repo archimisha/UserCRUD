@@ -24,19 +24,21 @@ public class User implements UserDetails {
     @Column(name = "AGE")
     private int age;
 
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Transient
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "USERS_ROLES", joinColumns = @JoinColumn(name = "USERS_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     private Set<Role> roles;
 
     public User() {}
 
-    public User(String name, String surname, int age, String password, Set<Role> roles) {
+    public User(String name, String surname, int age, String password) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.password = password;
-        this.roles = roles;
     }
 
     public int getId() {

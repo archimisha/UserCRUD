@@ -1,8 +1,8 @@
 package org.example.crud.service;
 
 import org.example.crud.dao.UserDAO;
+import org.example.crud.models.Role;
 import org.example.crud.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,5 +41,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(int id) {
         userDAO.delete(id);
+    }
+
+    @Override
+    public User findUserByName(String name) {
+        return userDAO.findUserByName(name);
+    }
+
+    @Override
+    public Role findRoleByName(String roleName) {
+        return userDAO.findRoleByName(roleName);
     }
 }
